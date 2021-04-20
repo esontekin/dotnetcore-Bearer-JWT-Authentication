@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "/Users/emru/.dotnet/store/|arch|/|tfm|",
-      "/Users/emru/.nuget/packages"
-    ]
-  }
-}

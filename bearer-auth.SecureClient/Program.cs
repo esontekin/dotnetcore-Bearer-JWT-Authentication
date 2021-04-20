@@ -54,22 +54,32 @@ namespace SecureClient
 
                 defaultRequestHeaders.Authorization = 
                     new AuthenticationHeaderValue("bearer", result.AccessToken);
-                
-                var response = await httpClient.GetAsync(config.BaseAddress);
-                if (response.IsSuccessStatusCode)
+
+                try
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    var json = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine($"\n {json}");
+                    var response = await httpClient.GetAsync(config.BaseAddress);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        var json = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"\n {json}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Failed to call API: {response.StatusCode}");
+                        var content = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine(content);
+                    }
+                    Console.ResetColor();
                 }
-                else
+                catch (Exception ex)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Failed to call API: {response.StatusCode}");
-                    var content = await response.Content.ReadAsStringAsync();
-                    Console.WriteLine(content);
+                    Console.WriteLine($"Failed to call API: {ex.Message}");
+                    Console.ResetColor();
                 }
-                Console.ResetColor();
+                
             }
         }
     }
